@@ -1,0 +1,79 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Sistema de Cotizaciones";
+}
+
+<div class="text-center">
+    <h1>Sistema de Cotizaciones</h1>
+</div>
+
+<br/>
+
+<div>
+    <b><p id="precio"></p></b>
+    <script>
+        //COLECTAR LA FECHA
+        var fecha = new Date();
+        var dia = fecha.getDate();
+        var mes = fecha.getMonth() + 1;
+        var anio = fecha.getFullYear();
+
+        if (dia < 10) dia = '0' + dia;
+        if (mes < 10) mes = '0' + mes;
+
+        //CONSUMO DE API PARA PRECIO DEL DOLAR
+        var api_url = 'https://api.exchangerate-api.com/v4/latest/USD'
+        fetch(api_url)
+            .then(response => response.json())
+            .then(data => {
+                var precio = data.rates.MXN;
+                document.getElementById('precio').innerHTML = "Cambio al dia (" + dia + "/" + mes + "/" + anio + ") es: $" + precio + " mxn";
+            })
+            .catch(error => console.error('Error: ', error));
+    </script>
+</div>
+
+<br/>
+
+<div class="d-flex justify-content-center">
+    <table width="100%">
+        <tr>
+            <th width="70%">
+                <div style="border: 1px solid black; padding: 10px; border-radius: 10px">
+                    <label for="tipo-producto">Tipo de Producto </label>
+                    <select name="tipo-producto" id="tipo-producto">
+                        <option value="bobina">Bobina</option>
+                        <option value="bolsa_sello_aleta">Bolsa Sello Aleta</option>
+                        <option value="bolsa_stand_up_pouch">Bolsa Stand Up Pouch</option>
+                        <option value="bolsa_pouch">Bolsa Pouch</option>
+                        <option value="manga_termoencogible">Manga Termoencogible</option>
+                    </select>
+                    <br/>
+                    <label for="cantidad-producto">Cantidad de Producto </label>
+                    <input type="number" name="cantidad" >
+                    <select name="cantidad-producto" id="cantidad-producto">
+                        <option value="pieza">Piezas</option>
+                        <option value="kilogramo">Kilogramos</option>
+                    </select>
+                    <br/>
+                    <div style="border: 1px solid black; padding: 10px; border-radius: 10px">
+                        <label for="width">Width (Rep) | Ancho </label>
+                        <input type="number" name="cm_width">
+                        <br/>
+                        <label for="width">Heigth (Roll Width) | Alto </label>
+                        <input type="number" name="cm_heigth">
+                        <br/>
+                        <label for="width">Bottom Gusset | Fuelle Inferior</label>
+                        <input type="number" name="cm_bg">
+                    </div>
+                </div>
+            </th>
+            <th width="30%">
+                <div style="border: 1px solid black; padding: 10px; border-radius: 10px">
+                    
+                </div>
+            </th>
+        </tr>
+    </table>
+</div>
