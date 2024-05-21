@@ -41,6 +41,7 @@
         <tr>
             <th width="70%">
                 <div style="border: 1px solid black; padding: 10px; border-radius: 10px">
+                    
                     <label for="tipo-producto">Tipo de Producto </label>
                     <select name="tipo-producto" id="tipo-producto">
                         <option value="bobina">Bobina</option>
@@ -56,16 +57,132 @@
                         <option value="pieza">Piezas</option>
                         <option value="kilogramo">Kilogramos</option>
                     </select>
-                    <br/>
-                    <div style="border: 1px solid black; padding: 10px; border-radius: 10px">
+                    
+                    <div style="border: 1px solid black; padding: 10px; border-radius: 10px; margin-top: 5px">
                         <label for="width">Width (Rep) | Ancho </label>
                         <input type="number" name="cm_width">
                         <br/>
-                        <label for="width">Heigth (Roll Width) | Alto </label>
+                        <label for="heigth">Heigth (Roll Width) | Alto </label>
                         <input type="number" name="cm_heigth">
                         <br/>
-                        <label for="width">Bottom Gusset | Fuelle Inferior</label>
+                        <label for="bg">Bottom Gusset | Fuelle Inferior</label>
                         <input type="number" name="cm_bg">
+                    </div>
+                    
+                    <div style="border: 1px solid black; padding: 10px; border-radius: 10px; margin-top: 10px">
+                        <label for="repetitions">Repetitions | Repeticiones </label>
+                        <input type="number" name="cnt_rep">
+                        <br/>
+                        <label for="laminated">Laminated | Laminado </label>
+                        <select name="laminated" id="laminated">
+                            <option value="positive">Si</option>
+                            <option value="negative">No</option>
+                        </select>
+                        <br/>
+                        <label for="width">Film Roll Width | Ancho del Rollo de Película</label>
+                        <input type="number" name="cm_bg" readonly>
+                    </div>
+
+                    <div style="border: 1px solid black; padding: 10px; border-radius: 10px; margin-top: 10px">
+                        <table id="tablaPeliculas">
+                            <thead>
+                                <tr>
+                                    <th>Structure</th>
+                                    <th>Type</th>
+                                    <th>Color</th>
+                                    <th>Gauge µm</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <button onclick="agregarFila()">Agregar Fila de Película</button>
+                        <button onclick="quitarFila()">Quitar Fila de Película</button>
+
+                        <script type="text/javascript">
+                            var cuentaPelícula = 0;
+                            var coloresPorTipo = {
+                                "T1": ["Clear", "Metalized", "Alox"],  // PET
+                                "T2": ["Clear", "Metalized", "WC", "WCM", "PW", "Matte"],  // BOPP
+                                "T3": ["Clear", "Opaque"],  // LDPE
+                                "T4": ["Clear"],  // CPP
+                                "T5": ["N/A"],  // FOIL
+                                "T6": ["N/A"],  // PVC
+                                "T7": ["N/A"],  // NYLON
+                                "T8": ["N/A"]   // POLYOLEFFIN
+                            };
+
+                            function agregarFila() {
+                                var tabla = document.getElementById("tablaPeliculas").getElementsByTagName('tbody')[0];
+                                var nuevaFila = tabla.insertRow(tabla.rows.length);
+
+                                var celda1 = nuevaFila.insertCell(0);
+                                var celda2 = nuevaFila.insertCell(1);
+                                var celda3 = nuevaFila.insertCell(2);
+                                var celda4 = nuevaFila.insertCell(3);
+
+                                celda1.innerHTML = "FILM " + (++cuentaPelícula);
+                                celda2.innerHTML = "";
+                                celda3.innerHTML = "";
+                                celda4.innerHTML = "";
+
+                                //SELECCIONAR EL TIPO
+                                var selectTipo = document.createElement("select");
+                                selectTipo.name = "tipo-producto";
+                                selectTipo.id = "tipo-producto";
+                                var opcionesTipo = ["PET", "BOPP", "LDPE", "CPP", "FOIL", "PVC", "NYLON", "POLYOLEFFIN"];
+                                for (var i = 0; i < opcionesTipo.length; i++) {
+                                    var opcionTipo = document.createElement("option");
+                                    opcionTipo.value = "T" + (i + 1);
+                                    opcionTipo.text = opcionesTipo[i];
+                                    selectTipo.appendChild(opcionTipo);
+                                }
+                                celda2.appendChild(selectTipo);
+                                
+                                //SELECCIONAR EL COLOR
+                                var selectColor = document.createElement("select");
+                                selectColor.name = "color-producto";
+                                selectColor.id = "color-producto";
+                                var opcionesColor = coloresPorTipo[selectTipo.value];
+                                for (var i = 0; i < opcionesColor.length; i++) {
+                                    var opcionColor = document.createElement("option");
+                                    opcionColor.value = opcionesColor[i];
+                                    opcionColor.text = opcionesColor[i];
+                                    selectColor.appendChild(opcionColor);
+                                }
+                                celda3.appendChild(selectColor);
+
+                                //PARA DETECTAR LOS CAMBIOS AL TIPO DE PRODUCTO Y CAMBIAR EL COLOR
+                                selectTipo.addEventListener('change', function () {
+                                    while (selectColor.firstChild) {
+                                        selectColor.removeChild(selectColor.firstChild);
+                                    }
+                                    var nuevasOpcionesColor = coloresPorTipo[selectTipo.value];
+                                    for (var i = 0; i < nuevasOpcionesColor.length; i++) {
+                                        var nuevaOpcionColor = document.createElement("option");
+                                        nuevaOpcionColor.value = nuevasOpcionesColor[i];
+                                        nuevaOpcionColor.text = nuevasOpcionesColor[i];
+                                        selectColor.appendChild(nuevaOpcionColor);
+                                    }
+                                });
+                            }
+
+                            function quitarFila() {
+                                var tabla = document.getElementById("tablaPeliculas").getElementsByTagName('tbody')[0];
+                                var numeroFilas = tabla.rows.length;
+
+                                if (numeroFilas > 2) {
+                                    tabla.deleteRow(numeroFilas - 1);
+                                    cuentaPelícula = cuentaPelícula - 1;
+                                } else {
+                                    alert("El producto debe tener al menos un film.");
+                                }
+                            }
+
+                        </script> 
                     </div>
                 </div>
             </th>

@@ -20,3 +20,13 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+#tablaPeliculas {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#tablaPeliculas th, #tablaPeliculas td {
+    border: 1px solid black;
+    padding: 10px;
+}
