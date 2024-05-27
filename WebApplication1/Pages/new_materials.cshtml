@@ -1,0 +1,90 @@
+﻿@page
+@model WebApplication1.Pages.new_materialsModel
+@{
+    ViewData["Title"] = "Ingreso de Material";
+}
+<h1>@ViewData["Title"]</h1>
+
+<table width="100%">
+    <tr>
+
+        <td width="40%">
+            <form class="needs-validation">
+                <div class="form-group">
+                    <label for="tipo">Tipo:</label>
+                    <input type="text" class="form-control" id="tipo" required>
+                    <div class="invalid-feedback">
+                        Por favor, ingresa el dato.
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="tipo">Color:</label>
+                    <input type="text" class="form-control" id="color" required>
+                    <div class="invalid-feedback">
+                        Por favor, ingresa el dato.
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="tipo">Gauge (µm):</label>
+                    <input type="number" class="form-control" id="gaugemic" required disabled>
+                    <div class="invalid-feedback">
+                        Por favor, ingresa el dato.
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="tipo">Gauge (mil):</label>
+                    <input type="number" class="form-control" id="gaugemil" required disabled>
+                    <div class="invalid-feedback">
+                        Por favor, ingresa el dato.
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="tipo">Densidad:</label>
+                    <input type="number" class="form-control" id="densidad" required>
+                    <div class="invalid-feedback">
+                        Por favor, ingresa el dato.
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="tipo">Costo MXN/Kg:</label>
+                    <input type="number" class="form-control" id="costomxn" required>
+                    <div class="invalid-feedback">
+                        Por favor, ingresa el tipo de material.
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="tipo">Costo USD/Kg:</label>
+                    <input type="number" class="form-control" id="costousd" required disabled>
+                    <div class="invalid-feedback">
+                        Por favor, ingresa el tipo de material.
+                    </div>
+                </div>
+                <div style="width: 100%; text-align: center;">
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+            </form>
+        </td>
+
+        <td width="60%" style="align-content: flex-start;">
+            <div style="width: 100%; text-align: center;">
+                <button type="submit" class="btn btn-primary" style="margin-bottom: 10px;">Consulta de Materiales</button>
+            </div>
+            <table id="tablaMateriales" class="table table-striped table-hover" style="margin-left: 15px;">
+                <thead>
+                    <tr>
+                        <th>Tipo</th>
+                        <th>Color</th>
+                        <th>Densidad</th>
+                        <th>C. MXN/Kg</th>
+                        <th>C. USD/Kg</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+
+    </tr>
+</table>
